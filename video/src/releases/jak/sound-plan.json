@@ -1,0 +1,209 @@
+{
+  "release": "jak",
+  "audio": {
+    "sha256": "936dca0b311d79843f193ef2a3d54d527a530613ed39ece1eb2b5031e6d4f048"
+  },
+  "character": {
+    "name": "сухие короткие акценты + счёт цифр",
+    "use": [
+      "счёт на каждой сумме",
+      "хлопки на плашках",
+      "один сигнал на «внимание»",
+      "один удар на 3D «312»"
+    ],
+    "avoid": [
+      "звук на каждое слово",
+      "длинные хвосты под речью",
+      "музыка"
+    ]
+  },
+  "events": [
+    {
+      "id": "e01-hook",
+      "screen": "s1-hook",
+      "at": "n007",
+      "lead": -0.04,
+      "do": "hook-card 312 000 count-up",
+      "role": "state",
+      "importance": 1,
+      "file": "05-cifry/cifry-05.wav",
+      "durationSec": 0.9
+    },
+    {
+      "id": "e02-left",
+      "screen": "s2-dispute",
+      "at": "n021",
+      "lead": 0.04,
+      "do": "vs-card «льготная»",
+      "role": "state",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-18.wav",
+      "durationSec": 0.56
+    },
+    {
+      "id": "e03-right",
+      "screen": "s2-dispute",
+      "at": "n025",
+      "lead": 0.08,
+      "do": "vs-card «стандартная»",
+      "role": "state",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-14.wav",
+      "durationSec": 0.4
+    },
+    {
+      "id": "e04-ch1",
+      "screen": "s3-option1",
+      "at": "n036",
+      "lead": -0.23,
+      "do": "chapter-tag ВАРИАНТ 1",
+      "role": "state",
+      "importance": 3,
+      "file": "01-svaypy/svaypy-06.wav",
+      "durationSec": 0.64
+    },
+    {
+      "id": "e05-13m",
+      "screen": "s3-option1",
+      "at": "n056",
+      "lead": -0.04,
+      "do": "card A 13 000 000",
+      "role": "state",
+      "importance": 2,
+      "file": "05-cifry/cifry-05.wav",
+      "durationSec": 0.9
+    },
+    {
+      "id": "e06-107k",
+      "screen": "s3-option1",
+      "at": "n065",
+      "lead": -0.04,
+      "do": "card A 107 000",
+      "role": "state",
+      "importance": 2,
+      "file": "05-cifry/cifry-05.wav",
+      "durationSec": 0.9
+    },
+    {
+      "id": "e07-ch2",
+      "screen": "s4-option2",
+      "at": "n073",
+      "lead": -0.23,
+      "do": "chapter-tag ВАРИАНТ 2",
+      "role": "state",
+      "importance": 3,
+      "file": "01-svaypy/svaypy-06.wav",
+      "durationSec": 0.64
+    },
+    {
+      "id": "e08-8m",
+      "screen": "s4-option2",
+      "at": "n081",
+      "lead": -0.04,
+      "do": "card B 8 000 000",
+      "role": "state",
+      "importance": 2,
+      "file": "05-cifry/cifry-05.wav",
+      "durationSec": 0.9
+    },
+    {
+      "id": "e09-81k",
+      "screen": "s4-option2",
+      "at": "n102",
+      "lead": -0.04,
+      "do": "card B 81 000",
+      "role": "state",
+      "importance": 2,
+      "file": "05-cifry/cifry-05.wav",
+      "durationSec": 0.9
+    },
+    {
+      "id": "e10-alert",
+      "screen": "s5-difference",
+      "at": "n110",
+      "lead": -0.08,
+      "do": "ВНИМАНИЕ, тряска",
+      "role": "state",
+      "importance": 1,
+      "file": "08-signaly/signaly-07.wav",
+      "durationSec": 0.57
+    },
+    {
+      "id": "e11-draw",
+      "screen": "s5-difference",
+      "at": "n112",
+      "lead": -0.15,
+      "do": "рисуется «26»",
+      "role": "state",
+      "importance": 2,
+      "file": "07-iskry/iskry-01.wav",
+      "durationSec": 1.2
+    },
+    {
+      "id": "e12-312y",
+      "screen": "s5-difference",
+      "at": "n118",
+      "lead": -0.04,
+      "do": "card C 312 000 в год",
+      "role": "state",
+      "importance": 1,
+      "file": "05-cifry/cifry-05.wav",
+      "durationSec": 0.9
+    },
+    {
+      "id": "e13-3d",
+      "screen": "s6-brand",
+      "at": "n127",
+      "lead": -0.29,
+      "do": "3D «312»",
+      "role": "state",
+      "importance": 1,
+      "file": "04-nagnetanie/nagnetanie-13.wav",
+      "durationSec": 2.5
+    },
+    {
+      "id": "e14-brand",
+      "screen": "s6-brand",
+      "at": "n137",
+      "lead": 0.04,
+      "do": "ПЛАНЕТА",
+      "role": "state",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-18.wav",
+      "durationSec": 0.56
+    },
+    {
+      "id": "e15-market",
+      "screen": "s6-brand",
+      "at": "n146",
+      "lead": 0.08,
+      "do": "chip вторичный рынок",
+      "role": "state",
+      "importance": 3,
+      "file": "02-vsplytie/vsplytie-14.wav",
+      "durationSec": 0.4
+    },
+    {
+      "id": "e16-better",
+      "screen": "s7-advice",
+      "at": "n164",
+      "lead": 0.08,
+      "do": "вторичка выгоднее ✓",
+      "role": "state",
+      "importance": 2,
+      "file": "08-signaly/signaly-15.wav",
+      "durationSec": 0.78
+    },
+    {
+      "id": "e17-cta",
+      "screen": "s8-cta",
+      "at": "n183",
+      "lead": 0.0,
+      "do": "печатается «без ПВ»",
+      "role": "state",
+      "importance": 2,
+      "file": "03-knopki-i-okna/knopki-i-okna-28.wav",
+      "durationSec": 0.5
+    }
+  ]
+}

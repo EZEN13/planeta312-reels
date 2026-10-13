@@ -11,3 +11,6 @@ Config.setRspack(true);
 Config.setVideoImageFormat("jpeg");
 Config.setOverwriteOutput(true);
 Config.setDefaultPremountInSeconds(2);
+
+// 3D (Three.js) в рендере на Mac — через ANGLE
+Config.setChromiumOpenGlRenderer("angle");

@@ -48,6 +48,13 @@ npx remotion render Mutabar2 out/mutabar-v2.mp4 --concurrency=2
 5. Сборка: npx remotion render Mutabar2 out/mutabar-v3-sound.mp4 --concurrency=2
 6. Громкость: ffmpeg -hide_banner -i out/ФАЙЛ.mp4 -vn -af loudnorm=I=-14:TP=-1:LRA=7:print_format=json -f null -
 
+## Выпуск jak
+ffmpeg -i "public/жак эксперт_1.mp4" -vf scale=1080:1920:flags=lanczos -c:v libx264 -crf 14 -preset slow -c:a copy public/jak-1080.mp4
+Рабочая копия 1080×1920 — сборка из 4K в разы медленнее. Разметка, проверка и звуки — как у mutabar (releases/jak).
+python3 tools/overlays.py public/jak-1080.mp4 0.1 — где и когда в исходнике вшитый жёлтый/красный текст.
+npx remotion render Jak out/jak-v1.mp4 --concurrency=2
+3D (Three.js) в рендере работает через ANGLE — включено в remotion.config.ts.
+
 ## Проба маски
 npx remotion render MaskTest out/mask-test.mp4 --concurrency=2
 
