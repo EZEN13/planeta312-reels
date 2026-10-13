@@ -1,3 +1,4 @@
+import { loadFont as loadInterTight } from "@remotion/google-fonts/InterTight";
 import { loadFont as loadManrope } from "@remotion/google-fonts/Manrope";
 import { loadFont as loadUnbounded } from "@remotion/google-fonts/Unbounded";
 
@@ -27,3 +28,9 @@ export const SHADOW = "0 18px 50px rgba(0, 0, 0, 0.28)";
 // Отступ сверху для графики: ниже интерфейса Reels/TikTok, выше лиц в кадре
 export const TOP_SAFE = 190;
 export const SIDE = 64;
+
+// Шрифт по STYLE.md: Light — связки, SemiBold — дополнения, Black — ключевые слова
+export const KINETIC_FONT = loadInterTight("normal", {
+  weights: ["300", "600", "900"],
+  subsets: [...subsets],
+}).fontFamily;

@@ -23,4 +23,12 @@ whisper-cli -m ~/whisper-models/ggml-large-v3-turbo-q5_0.bin -f work/clip.wav -l
 npx remotion render Mutabar out/mutabar-30s.mp4 --concurrency=2
 Ролики регистрируются в src/Root.tsx, сами ролики — в src/reels/, общие субтитры и графика — в src/components/, стиль — в src/style/theme.ts.
 
+## Маска спикера (текст за человеком)
+~/.venvs/matting/bin/python tools/matte.py "public/ИСХОДНИК.mp4" 20.0 4.4 public/mattes/kitchen.webm
+Вырезает человека из куска исходника (начало и длина в секундах) в WebM VP9 с прозрачным фоном. Нейросеть RobustVideoMatting, окружение и веса в ~/.venvs/matting (PyTorch, ускорение MPS). На M2 — около 11 с работы на 1 с видео.
+В Remotion: <OffthreadVideo src={...} transparent muted /> внутри <AbsoluteFill>, поверх исходника с тем же началом (trimBefore). Пример — src/reels/MaskTest.tsx.
+
+## Проба маски
+npx remotion render MaskTest out/mask-test.mp4 --concurrency=2
+
 src/index.ts и конфиги — из шаблона, не менять.
