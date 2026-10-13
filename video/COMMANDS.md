@@ -36,6 +36,18 @@ python3 tools/heads.py public/mattes/mutabar.webm 0 30.4 0.5
 npx remotion render Mutabar2 out/mutabar-v2.mp4 --concurrency=2
 Около 10 мин на M2: кадры маски извлекаются с прозрачностью.
 
+## Выпуск по урокам 10–12 (папки releases/<выпуск>)
+Порядок: разметка слов → раскадровка → звуковой план → проверка → сборка.
+1. Разметка: whisper-cli ... -ojf -ml 1 -sow -of work/words-full, затем
+   python3 tools/words.py work/words-full.json "public/ИСХОДНИК.mp4" 0 30.4 public/releases/mutabar
+   Пишет words-timing.json (номера слов n001…, SHA-256 и длительность исходника), печатает сомнительные слова.
+   Написание на экране и ручные правки времени — в public/releases/mutabar/pronounce.json.
+2. Раскадровка: public/releases/mutabar/storyboard.md (для человека) и src/releases/mutabar/storyboard.json (для сборки).
+3. Звуковой план: public/releases/mutabar/sound-plan.md и src/releases/mutabar/sound-plan.json. Звуки — public/sfx/ (в Git не попадают), источники — SFX-SOURCES.md. Библиотека: ~/Documents/SGX _ SFX.
+4. Проверка перед сборкой: python3 tools/check.py mutabar 30.4 25
+5. Сборка: npx remotion render Mutabar2 out/mutabar-v3-sound.mp4 --concurrency=2
+6. Громкость: ffmpeg -hide_banner -i out/ФАЙЛ.mp4 -vn -af loudnorm=I=-14:TP=-1:LRA=7:print_format=json -f null -
+
 ## Проба маски
 npx remotion render MaskTest out/mask-test.mp4 --concurrency=2
 

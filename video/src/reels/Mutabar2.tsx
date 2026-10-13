@@ -1,5 +1,7 @@
 import { AbsoluteFill, interpolate, OffthreadVideo, staticFile, useCurrentFrame } from "remotion";
 import { KineticWord, Role } from "../components/Kinetic";
+import { Sound } from "../releases/mutabar/Sound";
+import { wordStart } from "../releases/mutabar/timing";
 
 // Mutabar по STYLE.md: первые 30,4 с исходника, кинетическая типографика, ключевые слова за спикером
 export const MUTABAR2_FPS = 25;
@@ -21,131 +23,122 @@ const CUTS = [0, 3.0, 12.6, 17.2, 20.56, 26.6, MUTABAR2_SECONDS];
 type W = {
   text: string;
   role: Role;
-  at: number;
+  // Номер слова из words-timing.json; delay — сдвиг внутри длинного слова («кухня-гостиная»)
+  at: string;
+  delay?: number;
   y: number;
   x?: number;
   align?: "center" | "left" | "right";
   size?: number;
   color?: string;
 };
-type Group = { to: number; words: W[] };
+type Group = { words: W[] };
+
+// Секунды берутся только из words-timing.json: группа живёт до первого слова следующей
+const atSec = (w: W) => wordStart(w.at) + (w.delay ?? 0);
+const groupEnd = (i: number) => (GROUPS[i + 1] ? atSec(GROUPS[i + 1].words[0]) : MUTABAR2_SECONDS);
 
 // Ключевое слово — за головой: верх слова ≈ макушка − 0,3 размера (макушки — tools/heads.py).
 // Связка — над ключевым слева, дополнение — справа на уровне плеч, чтобы не закрывать лицо
 const GROUPS: Group[] = [
   {
-    to: 2.07,
     words: [
-      { text: "передаю", role: "link", at: 0.05, y: 350, x: 170, align: "left" },
-      { text: "ключи", role: "key", at: 0.63, y: 400, x: 750, size: 190 },
+      { text: "передаю", role: "link", at: "n001", y: 350, x: 170, align: "left" },
+      { text: "ключи", role: "key", at: "n002", y: 400, x: 750, size: 190 },
+      { text: "от квартиры", role: "link", at: "n003", y: 350, x: 1000, align: "right" },
     ],
   },
   {
-    to: 3.0,
     words: [
-      { text: "от квартиры", role: "link", at: 1.13, y: 450, x: 150, align: "left" },
-      { text: "документы", role: "key", at: 2.07, y: 500, x: 470, size: 150 },
+      { text: "документы", role: "key", at: "n005", y: 500, x: 470, size: 150 },
     ],
   },
   {
-    to: 6.24,
     words: [
-      { text: "приобрели", role: "link", at: 3.0, y: 470, x: 110, align: "left" },
-      { text: "евродвушку", role: "key", at: 4.53, y: 520, size: 150 },
+      { text: "приобрели", role: "link", at: "n006", y: 470, x: 110, align: "left" },
+      { text: "евродвушку", role: "key", at: "n007", y: 520, size: 150 },
     ],
   },
   {
-    to: 8.16,
     words: [
-      { text: "56", role: "key", at: 6.24, y: 470, x: 470, size: 300 },
-      { text: "м²", role: "extra", at: 7.27, y: 560, x: 660, align: "left", size: 130, color: ACCENT },
+      { text: "56", role: "key", at: "n008", y: 470, x: 470, size: 300 },
+      { text: "м²", role: "extra", at: "n009", y: 560, x: 660, align: "left", size: 130, color: ACCENT },
     ],
   },
   {
-    to: 10.82,
     words: [
-      { text: "с ежемесячным", role: "link", at: 8.16, y: 440, x: 110, align: "left" },
-      { text: "платежом", role: "extra", at: 8.92, y: 470, x: 1000, align: "right", size: 80 },
-      { text: "69 000", role: "key", at: 9.54, y: 520, size: 220 },
+      { text: "с ежемесячным", role: "link", at: "n011", y: 440, x: 110, align: "left" },
+      { text: "платежом", role: "extra", at: "n013", y: 470, x: 1000, align: "right", size: 80 },
+      { text: "69 000", role: "key", at: "n014", y: 520, size: 220 },
     ],
   },
   {
-    to: 12.06,
     words: [
-      { text: "пойдёмте", role: "link", at: 10.82, y: 500, x: 130, align: "left" },
-      { text: "покажу", role: "extra", at: 11.35, y: 470, x: 1000, align: "right" },
+      { text: "пойдёмте", role: "link", at: "n015", y: 500, x: 130, align: "left" },
+      { text: "покажу", role: "extra", at: "n016", y: 470, x: 1000, align: "right" },
     ],
   },
   {
-    to: 14.79,
     words: [
-      { text: "небольшой", role: "link", at: 12.06, y: 610, x: 130, align: "left" },
-      { text: "обзор", role: "key", at: 12.86, y: 670 },
-      { text: "квартиры", role: "extra", at: 14.24, y: 590, x: 1010, align: "right", size: 80 },
+      { text: "небольшой", role: "link", at: "n018", y: 610, x: 130, align: "left" },
+      { text: "обзор", role: "key", at: "n019", y: 670 },
+      { text: "квартиры", role: "extra", at: "n021", y: 590, x: 1010, align: "right", size: 80 },
     ],
   },
   {
-    to: 16.32,
     words: [
-      { text: "смотрите", role: "extra", at: 14.79, y: 560, x: 1045, align: "right", size: 84 },
-      { text: "здесь у нас", role: "link", at: 15.43, y: 660, x: 1010, align: "right" },
+      { text: "смотрите", role: "extra", at: "n022", y: 560, x: 1045, align: "right", size: 84 },
+      { text: "здесь у нас", role: "link", at: "n023", y: 660, x: 1010, align: "right" },
     ],
   },
   {
-    to: 18.68,
     words: [
-      { text: "коридор", role: "key", at: 16.32, y: 580, size: 210 },
-      { text: "достаточно большой", role: "extra", at: 17.0, y: 500, x: 1010, align: "right", size: 72 },
+      { text: "коридор", role: "key", at: "n026", y: 580, size: 210 },
+      { text: "достаточно большой", role: "extra", at: "n027", y: 500, x: 1010, align: "right", size: 72 },
     ],
   },
   {
-    to: 20.06,
     words: [
-      { text: "дальше", role: "link", at: 18.68, y: 560, x: 150, align: "left" },
-      { text: "мы идём", role: "extra", at: 19.26, y: 620 },
+      { text: "дальше", role: "link", at: "n029", y: 560, x: 150, align: "left" },
+      { text: "мы идём", role: "extra", at: "n030", y: 620 },
     ],
   },
   {
-    to: 21.71,
     words: [
-      { text: "здесь", role: "link", at: 20.06, y: 590, x: 90, align: "left" },
-      { text: "Кухня", role: "key", at: 20.37, y: 640 },
-      { text: "гостиная", role: "extra", at: 20.9, y: 560, x: 1010, align: "right", size: 80 },
+      { text: "здесь", role: "link", at: "n032", y: 590, x: 90, align: "left" },
+      { text: "Кухня", role: "key", at: "n033", y: 640 },
+      { text: "гостиная", role: "extra", at: "n033", delay: 0.5, y: 560, x: 1010, align: "right", size: 80 },
     ],
   },
   {
-    to: 23.5,
     words: [
-      { text: "тоже", role: "link", at: 21.71, y: 680, x: 140, align: "left" },
-      { text: "большая", role: "key", at: 22.11, y: 730, size: 210 },
+      { text: "тоже", role: "link", at: "n034", y: 680, x: 140, align: "left" },
+      { text: "большая", role: "key", at: "n035", y: 730, size: 210 },
     ],
   },
   {
-    to: 26.26,
     words: [
-      { text: "которую хотят", role: "link", at: 23.5, y: 640, x: 130, align: "left" },
-      { text: "переделать", role: "key", at: 25.5, y: 690, size: 170 },
+      { text: "которую хотят", role: "link", at: "n037", y: 640, x: 130, align: "left" },
+      { text: "переделать", role: "key", at: "n042", y: 690, size: 170 },
     ],
   },
   {
-    to: 28.72,
     words: [
-      { text: "если о переделках", role: "link", at: 26.26, y: 560, x: 1010, align: "right" },
-      { text: "что хотят делать", role: "extra", at: 27.16, y: 620, x: 1010, align: "right", size: 66 },
+      { text: "если о переделках", role: "link", at: "n043", y: 560, x: 1010, align: "right" },
+      { text: "что хотят делать", role: "extra", at: "n046", y: 620, x: 1010, align: "right", size: 66 },
     ],
   },
   {
-    to: MUTABAR2_SECONDS,
     words: [
-      { text: "убрать", role: "extra", at: 28.72, y: 560, x: 1010, align: "right", size: 80 },
-      { text: "стенку", role: "key", at: 29.75, y: 670 },
+      { text: "убрать", role: "extra", at: "n051", y: 560, x: 1010, align: "right", size: 80 },
+      { text: "стенку", role: "key", at: "n054", y: 670 },
     ],
   },
 ];
 
 const Words: React.FC<{ behind: boolean }> = ({ behind }) => (
   <>
-    {GROUPS.flatMap((g) =>
+    {GROUPS.flatMap((g, i) =>
       g.words
         .filter((w) => (w.role === "key") === behind)
         .map((w) => (
@@ -153,14 +146,14 @@ const Words: React.FC<{ behind: boolean }> = ({ behind }) => (
             key={`${w.at}-${w.text}`}
             text={w.text}
             role={w.role}
-            at={w.at}
-            until={g.to}
+            at={atSec(w)}
+            until={groupEnd(i)}
             y={w.y}
             x={w.x}
             align={w.align}
             size={w.size}
-            color={w.color ?? (w.role === "key" ? ACCENT : w.at < OUTDOOR_UNTIL ? "#FFFFFF" : INK)}
-            shadow={w.role !== "key" && w.at < OUTDOOR_UNTIL}
+            color={w.color ?? (w.role === "key" ? ACCENT : atSec(w) < OUTDOOR_UNTIL ? "#FFFFFF" : INK)}
+            shadow={w.role !== "key" && atSec(w) < OUTDOOR_UNTIL}
           />
         )),
     )}
@@ -200,6 +193,7 @@ export const Mutabar2: React.FC = () => {
         </AbsoluteFill>
         <Words behind={false} />
       </AbsoluteFill>
+      <Sound total={total} />
     </AbsoluteFill>
   );
 };

@@ -1,0 +1,75 @@
+{
+  "release": "mutabar",
+  "audio": { "sha256": "c63347b4050befd0349ad4fc5daf1589df50b46c14fcbdb306a4d819084d34e9" },
+  "settings": { "leadSec": 0.04, "tailSec": 0 },
+  "scenes": [
+    {
+      "id": "s1-keys",
+      "goal": "Показать, что сделка состоялась: ключи и документы переданы",
+      "from": "n001",
+      "to": "n005",
+      "visible": ["kinetic: передаю / ключи", "kinetic: от квартиры / документы"],
+      "events": [
+        { "at": "n002", "do": "key-word «ключи»: appear behind speaker" },
+        { "at": "n005", "do": "key-word «документы»: appear behind speakers" }
+      ],
+      "gaps": []
+    },
+    {
+      "id": "s2-deal",
+      "goal": "Назвать параметры покупки: евродвушка, 56 м², платёж 69 000",
+      "from": "n006",
+      "to": "n014",
+      "visible": ["kinetic: приобрели / евродвушку", "kinetic: 56 м²", "kinetic: с ежемесячным / платежом / 69 000"],
+      "events": [
+        { "at": "n007", "do": "key-word «евродвушку»: appear" },
+        { "at": "n008", "do": "key-word «56»: appear" },
+        { "at": "n009", "do": "extra «м²»: appear" },
+        { "at": "n014", "do": "key-word «69 000»: appear" }
+      ],
+      "gaps": ["валюта платежа не названа в речи — на экране без валюты"]
+    },
+    {
+      "id": "s3-tour",
+      "goal": "Перейти к обзору квартиры",
+      "from": "n015",
+      "to": "n021",
+      "visible": ["kinetic: пойдёмте / покажу", "kinetic: небольшой / обзор / квартиры"],
+      "events": [{ "at": "n019", "do": "key-word «обзор»: appear behind speaker (первый план в квартире)" }],
+      "gaps": []
+    },
+    {
+      "id": "s4-corridor",
+      "goal": "Показать коридор: достаточно большой",
+      "from": "n022",
+      "to": "n028",
+      "visible": ["kinetic: смотрите / здесь у нас", "kinetic: коридор / достаточно большой"],
+      "events": [{ "at": "n026", "do": "key-word «коридор»: appear" }],
+      "gaps": []
+    },
+    {
+      "id": "s5-kitchen",
+      "goal": "Показать кухню-гостиную: тоже большая",
+      "from": "n029",
+      "to": "n036",
+      "visible": ["kinetic: дальше / мы идём", "kinetic: здесь / Кухня / гостиная", "kinetic: тоже / большая"],
+      "events": [
+        { "at": "n033", "do": "key-word «Кухня»: appear behind speaker" },
+        { "at": "n035", "do": "key-word «большая»: appear behind speaker" }
+      ],
+      "gaps": []
+    },
+    {
+      "id": "s6-remodel",
+      "goal": "Рассказать о планах переделки: убрать стену",
+      "from": "n037",
+      "to": "n054",
+      "visible": ["kinetic: которую хотят / переделать", "kinetic: если о переделках / что хотят делать", "kinetic: убрать / стенку"],
+      "events": [
+        { "at": "n042", "do": "key-word «переделать»: appear behind speaker" },
+        { "at": "n054", "do": "key-word «стенку»: appear behind speaker — финальный акцент" }
+      ],
+      "gaps": []
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "release": "mutabar",
+  "audio": {
+    "sha256": "c63347b4050befd0349ad4fc5daf1589df50b46c14fcbdb306a4d819084d34e9"
+  },
+  "character": {
+    "name": "сухие короткие акценты",
+    "use": [
+      "короткие хлопки на ключевых словах",
+      "один пронос на входе в квартиру",
+      "один «верно» на цене",
+      "один тяжёлый удар в финале"
+    ],
+    "avoid": [
+      "длинные хвосты под речью",
+      "звук на каждое слово",
+      "мультяшные и «денежные» звуки",
+      "музыка"
+    ]
+  },
+  "_lead": "lead = 0,08 − время пика файла: пик приходится на 2-й кадр появления слова, когда оно уже читается",
+  "events": [
+    {
+      "id": "e01-keys",
+      "screen": "s1-keys",
+      "at": "n002",
+      "lead": 0.04,
+      "do": "key-word «ключи»: appear",
+      "role": "reveal",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-18.wav",
+      "peakSec": 0.04,
+      "durationSec": 0.56
+    },
+    {
+      "id": "e02-area",
+      "screen": "s2-deal",
+      "at": "n008",
+      "lead": 0.08,
+      "do": "key-word «56»: appear",
+      "role": "reveal",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-14.wav",
+      "peakSec": 0.0,
+      "durationSec": 0.4
+    },
+    {
+      "id": "e03-payment",
+      "screen": "s2-deal",
+      "at": "n014",
+      "lead": 0.08,
+      "do": "key-word «69 000»: appear",
+      "role": "state",
+      "importance": 1,
+      "file": "08-signaly/signaly-15.wav",
+      "peakSec": 0.0,
+      "durationSec": 0.78
+    },
+    {
+      "id": "e04-tour",
+      "screen": "s3-tour",
+      "at": "n019",
+      "lead": -0.23,
+      "do": "key-word «обзор»: appear, первый план в квартире",
+      "role": "transition",
+      "importance": 2,
+      "file": "01-svaypy/svaypy-06.wav",
+      "peakSec": 0.31,
+      "durationSec": 0.64
+    },
+    {
+      "id": "e05-corridor",
+      "screen": "s4-corridor",
+      "at": "n026",
+      "lead": 0.08,
+      "do": "key-word «коридор»: appear",
+      "role": "reveal",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-14.wav",
+      "peakSec": 0.0,
+      "durationSec": 0.4
+    },
+    {
+      "id": "e06-kitchen",
+      "screen": "s5-kitchen",
+      "at": "n033",
+      "lead": 0.04,
+      "do": "key-word «Кухня»: appear",
+      "role": "reveal",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-18.wav",
+      "peakSec": 0.04,
+      "durationSec": 0.56
+    },
+    {
+      "id": "e07-wall",
+      "screen": "s6-remodel",
+      "at": "n054",
+      "lead": -0.29,
+      "do": "key-word «стенку»: appear — финальный акцент",
+      "role": "impact",
+      "importance": 1,
+      "file": "04-nagnetanie/nagnetanie-13.wav",
+      "peakSec": 0.37,
+      "durationSec": 3.74
+    }
+  ]
+}
