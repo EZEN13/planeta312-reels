@@ -162,15 +162,15 @@
       "durationSec": 2.5
     },
     {
-      "id": "e14-brand",
+      "id": "e14-312-out",
       "screen": "s6-brand",
-      "at": "n137",
-      "lead": 0.04,
-      "do": "ПЛАНЕТА",
+      "at": "n132",
+      "lead": 0.0,
+      "do": "3D «312» улетает из кадра",
       "role": "state",
-      "importance": 2,
-      "file": "02-vsplytie/vsplytie-18.wav",
-      "durationSec": 0.56
+      "importance": 3,
+      "file": "01-svaypy/svaypy-06.wav",
+      "durationSec": 0.64
     },
     {
       "id": "e15-market",

@@ -31,7 +31,12 @@ const Digits: React.FC<{ text: string; color: string; spin: number }> = ({ text,
   );
 };
 
-// Вставка: цифры вылетают из глубины, поворачиваются и встают лицом к зрителю
+// Вставка ~2 с: вылетает из глубины, делает полный оборот и уходит вверх из кадра (правка 14.10.2026)
+const ENTER = 0.4;
+const SPIN_END = 1.6;
+const EXIT_END = 2.1;
+export const TEXT3D_SECONDS = EXIT_END;
+
 export const Text3D: React.FC<{ text: string; color: string; width: number; height: number }> = ({
   text,
   color,
@@ -41,15 +46,17 @@ export const Text3D: React.FC<{ text: string; color: string; width: number; heig
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
-  const enter = interpolate(t, [0, 0.6], [0, 1], { extrapolateRight: "clamp", easing: (x) => 1 - Math.pow(1 - x, 3) });
-  const spin = interpolate(enter, [0, 1], [-Math.PI * 1.15, 0]) + Math.sin(t * 2.2) * 0.12 * enter;
+  const smooth = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+  const enter = interpolate(t, [0, ENTER], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: (x) => 1 - Math.pow(1 - x, 3) });
+  const spin = interpolate(t, [0.15, SPIN_END], [0, Math.PI * 2], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: smooth });
+  const exit = interpolate(t, [SPIN_END, EXIT_END], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: (x) => x * x * x });
   const z = interpolate(enter, [0, 1], [-14, 0]);
   return (
     <ThreeCanvas width={width} height={height} camera={{ position: [0, 0, 3.1], fov: 45 }}>
       <ambientLight intensity={0.6} />
       <directionalLight position={[3, 4, 5]} intensity={2.4} />
-      <directionalLight position={[-4, -2, 3]} intensity={0.8} color={new THREE.Color("#ffd9a0")} />
-      <group position={[0, 0, z]}>
+      <directionalLight position={[-4, -2, 3]} intensity={0.8} color={new THREE.Color("#fff3c4")} />
+      <group position={[0, exit * 3.2, z]} rotation={[exit * -0.5, 0, 0]}>
         <Digits text={text} color={color} spin={spin} />
       </group>
     </ThreeCanvas>

@@ -1,5 +1,5 @@
 import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { C, LABEL_FONT, NUM_FONT, PLATE_RADIUS } from "./theme";
+import { C, LABEL_FONT, NUM_FONT } from "./theme";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
@@ -14,8 +14,9 @@ type Box = { x: number; y: number; w: number; h: number };
 const Plate: React.FC<{ box: Box; children: React.ReactNode; from: number; to: number }> = ({ box, children, from, to }) => {
   const { t } = useT();
   if (t < from || t >= to) return null;
-  const settle = interpolate(t - from, [0, 0.25], [1.04, 1], { ...clamp, easing: Easing.out(Easing.cubic) });
-  const out = interpolate(t, [to - 0.2, to], [1, 0], clamp);
+  const enter = interpolate(t - from, [0, 0.55], [0, 1], { ...clamp, easing: Easing.bezier(0.33, 0, 0.15, 1) });
+  const out = interpolate(t, [to - 0.4, to], [1, 0], { ...clamp, easing: Easing.in(Easing.cubic) });
+  const k = enter * out;
   return (
     <div
       style={{
@@ -24,10 +25,10 @@ const Plate: React.FC<{ box: Box; children: React.ReactNode; from: number; to: n
         top: box.y,
         width: box.w,
         height: box.h,
-        borderRadius: PLATE_RADIUS,
+        borderRadius: Math.min(box.h / 2, 90),
         background: C.plate,
-        transform: `scale(${settle * (0.9 + 0.1 * out)})`,
-        opacity: out,
+        transform: `translateY(${(1 - k) * 40}px) scale(${0.92 + 0.08 * k})`,
+        opacity: k,
         overflow: "hidden",
         boxShadow: "0 20px 60px rgba(0,0,0,0.35)",
       }}
@@ -46,8 +47,8 @@ export const VsCard: React.FC<{ from: number; to: number; box: Box; leftAt: numb
   vsAt,
   rightAt,
 }) => {
-  const { t, fps, frame } = useT();
-  const sp = (at: number) => spring({ frame: frame - Math.round(at * fps), fps, config: { damping: 14, stiffness: 200 } });
+  const { fps, frame } = useT();
+  const sp = (at: number) => spring({ frame: frame - Math.round(at * fps), fps, config: { damping: 200, stiffness: 90 } });
   const l = sp(leftAt);
   const v = sp(vsAt);
   const r = sp(rightAt);
@@ -79,15 +80,15 @@ export const VsCard: React.FC<{ from: number; to: number; box: Box; leftAt: numb
             width: 92,
             height: 92,
             borderRadius: 999,
-            background: C.red,
-            color: C.white,
+            background: C.white,
+            color: C.plate,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             fontFamily: NUM_FONT,
             fontWeight: 900,
             fontSize: 38,
-            transform: `scale(${v}) rotate(${(1 - v) * -90 + Math.sin(t * 9) * 3 * v}deg)`,
+            transform: `scale(${v})`,
           }}
         >
           VS
@@ -109,7 +110,7 @@ export const CommentCta: React.FC<{ from: number; to: number; box: Box; typeAt: 
   const { t, fps, frame } = useT();
   const text = "без ПВ";
   const chars = Math.round(interpolate(t, [typeAt, typeAt + 0.45], [0, text.length], clamp));
-  const heart = spring({ frame: frame - Math.round(heartAt * fps), fps, config: { damping: 9, stiffness: 220 } });
+  const heart = spring({ frame: frame - Math.round(heartAt * fps), fps, config: { damping: 200, stiffness: 90 } });
   const cursor = Math.floor(t * 3) % 2 === 0 && chars < text.length + 1;
   return (
     <Plate box={box} from={from} to={to}>
@@ -143,7 +144,7 @@ export const CommentCta: React.FC<{ from: number; to: number; box: Box; typeAt: 
           </div>
         </div>
         <svg width={70} height={64} viewBox="0 0 24 22" style={{ transform: `scale(${heart})`, flexShrink: 0 }}>
-          <path d="M12 21 2.5 11.6a5.6 5.6 0 0 1 8-8L12 5l1.5-1.4a5.6 5.6 0 0 1 8 8z" fill={C.red} />
+          <path d="M12 21 2.5 11.6a5.6 5.6 0 0 1 8-8L12 5l1.5-1.4a5.6 5.6 0 0 1 8 8z" fill={C.yellow} />
         </svg>
       </div>
     </Plate>
@@ -160,8 +161,8 @@ export const ChapterTag: React.FC<{ from: number; to: number; num: string; text:
 }) => {
   const { t } = useT();
   if (t < from || t >= to) return null;
-  const k = interpolate(t, [from, from + 0.35], [0, 1], { ...clamp, easing: Easing.out(Easing.cubic) });
-  const out = interpolate(t, [to - 0.25, to], [1, 0], clamp);
+  const k = interpolate(t, [from, from + 0.6], [0, 1], { ...clamp, easing: Easing.bezier(0.33, 0, 0.15, 1) });
+  const out = interpolate(t, [to - 0.4, to], [1, 0], clamp);
   return (
     <div
       style={{
@@ -170,17 +171,17 @@ export const ChapterTag: React.FC<{ from: number; to: number; num: string; text:
         top: y,
         display: "flex",
         alignItems: "stretch",
-        borderRadius: 18,
+        borderRadius: 999,
         overflow: "hidden",
-        opacity: out,
-        transform: `translateX(${(1 - k) * -420}px)`,
+        opacity: out * k,
+        transform: `translateX(${(1 - k) * -80}px)`,
         boxShadow: "0 12px 40px rgba(0,0,0,0.3)",
       }}
     >
-      <div style={{ background: C.yellow, color: C.plate, padding: "14px 22px", fontFamily: LABEL_FONT, fontWeight: 800, fontSize: 34 }}>
+      <div style={{ background: C.yellow, color: C.plate, padding: "14px 22px 14px 30px", fontFamily: LABEL_FONT, fontWeight: 800, fontSize: 34 }}>
         {num}
       </div>
-      <div style={{ background: C.plate, color: C.white, padding: "14px 24px", fontFamily: LABEL_FONT, fontWeight: 800, fontSize: 34 }}>
+      <div style={{ background: C.plate, color: C.white, padding: "14px 30px 14px 24px", fontFamily: LABEL_FONT, fontWeight: 800, fontSize: 34 }}>
         {text}
       </div>
     </div>
@@ -206,8 +207,8 @@ export const TopChip: React.FC<{ at: number; to: number; text: string; x: number
 }) => {
   const { t, fps, frame } = useT();
   if (t < at || t >= to) return null;
-  const k = spring({ frame: frame - Math.round(at * fps), fps, config: { damping: 12, stiffness: 210 } });
-  const out = interpolate(t, [to - 0.2, to], [1, 0], clamp);
+  const k = spring({ frame: frame - Math.round(at * fps), fps, config: { damping: 200, stiffness: 90 } });
+  const out = interpolate(t, [to - 0.4, to], [1, 0], clamp);
   const fg = filled ? C.plate : C.white;
   return (
     <div
@@ -221,8 +222,9 @@ export const TopChip: React.FC<{ at: number; to: number; text: string; x: number
         padding: "16px 28px 16px 20px",
         borderRadius: 999,
         background: filled ? C.yellow : C.plate,
-        opacity: out,
-        transform: `scale(${k}) rotate(${(1 - k) * -8}deg)`,
+        opacity: out * k,
+        transform: `translateY(${(1 - k) * -24}px) scale(${0.9 + 0.1 * k})`,
+        filter: `blur(${(1 - k) * 6}px)`,
         transformOrigin: "left center",
         boxShadow: "0 12px 40px rgba(0,0,0,0.3)",
         whiteSpace: "nowrap",
@@ -234,7 +236,7 @@ export const TopChip: React.FC<{ at: number; to: number; text: string; x: number
           <path d="M4 12.5 9.5 18 20 6" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - k} />
         </svg>
       ) : null}
-      {icon === "ask" ? <span style={{ fontFamily: NUM_FONT, fontWeight: 900, fontSize: 46, color: C.red }}>?</span> : null}
+      {icon === "ask" ? <span style={{ fontFamily: NUM_FONT, fontWeight: 900, fontSize: 46, color: C.yellow }}>?</span> : null}
       <span style={{ fontFamily: LABEL_FONT, fontWeight: 800, fontSize: 40, color: fg }}>{text}</span>
     </div>
   );
@@ -248,14 +250,14 @@ export const useCameraFx = (cuts: number[], punches: number[], shakes: number[])
   let bright = 1;
   for (const c of cuts) {
     const d = t - c;
-    if (d >= 0 && d < 0.3) {
-      scale += interpolate(d, [0, 0.25], [0.07, 0], { ...clamp, easing: Easing.out(Easing.cubic) });
-      blur += interpolate(d, [0, 0.15], [7, 0], clamp);
-      bright += interpolate(d, [0, 0.12], [0.35, 0], clamp);
+    if (d >= 0 && d < 0.45) {
+      scale += interpolate(d, [0, 0.4], [0.035, 0], { ...clamp, easing: Easing.out(Easing.cubic) });
+      blur += interpolate(d, [0, 0.2], [3, 0], clamp);
+      bright += interpolate(d, [0, 0.18], [0.12, 0], clamp);
     }
   }
   for (const p of punches) {
-    scale += interpolate(t, [p, p + 0.12, p + 0.6, p + 0.95], [0, 0.07, 0.07, 0], {
+    scale += interpolate(t, [p - 0.05, p + 0.3, p + 0.9, p + 1.5], [0, 0.05, 0.05, 0], {
       ...clamp,
       easing: Easing.inOut(Easing.quad),
     });
@@ -264,10 +266,10 @@ export const useCameraFx = (cuts: number[], punches: number[], shakes: number[])
   let dy = 0;
   for (const s of shakes) {
     const d = t - s;
-    if (d >= 0 && d < 0.45) {
-      const a = 14 * (1 - d / 0.45);
-      dx += Math.sin(d * 95) * a;
-      dy += Math.cos(d * 77) * a * 0.6;
+    if (d >= 0 && d < 0.6) {
+      const a = 7 * (1 - d / 0.6);
+      dx += Math.sin(d * 55) * a;
+      dy += Math.cos(d * 43) * a * 0.6;
     }
   }
   return { transform: `translate(${dx}px, ${dy}px) scale(${scale})`, filter: `blur(${blur}px) brightness(${bright})` };

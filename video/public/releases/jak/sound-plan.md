@@ -17,7 +17,7 @@
 | e11-draw | n112 | рисуется «26» | 07-iskry/iskry-01.wav | 2 | -0.15 |
 | e12-312y | n118 | card C 312 000 в год | 05-cifry/cifry-05.wav | 1 | -0.04 |
 | e13-3d | n127 | 3D «312» | 04-nagnetanie/nagnetanie-13.wav | 1 | -0.29 |
-| e14-brand | n137 | ПЛАНЕТА | 02-vsplytie/vsplytie-18.wav | 2 | +0.04 |
+| e14-312-out | n132 | 3D «312» улетает из кадра | 01-svaypy/svaypy-06.wav | 3 | +0.00 |
 | e15-market | n146 | chip вторичный рынок | 02-vsplytie/vsplytie-14.wav | 3 | +0.08 |
 | e16-better | n164 | вторичка выгоднее ✓ | 08-signaly/signaly-15.wav | 2 | +0.08 |
 | e17-cta | n183 | печатается «без ПВ» | 03-knopki-i-okna/knopki-i-okna-28.wav | 2 | +0.00 |
