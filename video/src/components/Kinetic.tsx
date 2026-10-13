@@ -52,6 +52,7 @@ export const KineticWord: React.FC<{
         fontWeight: r.weight,
         fontSize: size ?? r.size,
         letterSpacing: r.tracking,
+        wordSpacing: "0.12em",
         lineHeight: 0.9,
         color,
         textShadow: shadow ? "0 4px 24px rgba(0,0,0,0.35)" : undefined,

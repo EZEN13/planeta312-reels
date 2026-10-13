@@ -28,6 +28,14 @@ npx remotion render Mutabar out/mutabar-30s.mp4 --concurrency=2
 Вырезает человека из куска исходника (начало и длина в секундах) в WebM VP9 с прозрачным фоном. Нейросеть RobustVideoMatting, окружение и веса в ~/.venvs/matting (PyTorch, ускорение MPS). На M2 — около 11 с работы на 1 с видео.
 В Remotion: <OffthreadVideo src={...} transparent muted /> внутри <AbsoluteFill>, поверх исходника с тем же началом (trimBefore). Пример — src/reels/MaskTest.tsx.
 
+## Где голова (для слов за спикером)
+python3 tools/heads.py public/mattes/mutabar.webm 0 30.4 0.5
+Таблица: время, макушка (y) и центр головы (x). Ключевое слово ставить с верхом ≈ макушка − 0,3 размера шрифта.
+
+## Сборка Mutabar v2 (по STYLE.md)
+npx remotion render Mutabar2 out/mutabar-v2.mp4 --concurrency=2
+Около 10 мин на M2: кадры маски извлекаются с прозрачностью.
+
 ## Проба маски
 npx remotion render MaskTest out/mask-test.mp4 --concurrency=2
 
