@@ -1,0 +1,18 @@
+# Ключи и пароли
+.env
+.env.*
+!.env.example
+
+# Личные настройки агента
+.claude/settings.local.json
+
+# Установленные библиотеки
+node_modules/
+
+# Готовые видео
+out/
+*.mp4
+*.mov
+*.webm
+*.mkv
+*.avi
