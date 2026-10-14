@@ -2,7 +2,7 @@ import { AbsoluteFill, interpolate, OffthreadVideo, Sequence, staticFile, useCur
 import { SfxLayer } from "../../components/SfxLayer";
 import { DataCard } from "./DataCard";
 import { DrawNumber } from "./DrawNumber";
-import { ChapterTag, CommentCta, TopChip, useCameraFx, VsCard } from "./Extras";
+import { CaptionFix, ChapterTag, CommentCta, TopChip, useCameraFx, VsCard } from "./Extras";
 import plan from "./sound-plan.json";
 import { RawPatch } from "./RawPatch";
 import { Text3D, TEXT3D_SECONDS } from "./Text3D";
@@ -26,6 +26,8 @@ const HOOK = { x: 90, y: 1200, w: 900, h: 240 };
 const VS = { x: 110, y: 1290, w: 860, h: 270 };
 const DIFF = { x: 90, y: 1200, w: 900, h: 320 };
 const CTA = { x: 110, y: 1250, w: 860, h: 250 };
+// Вшитые «приобрести» и «квартиру» наплывом наложились друг на друга — 50,75–51,05 с
+const CAPTION = { x: 220, y: 1280, w: 640, h: 120 };
 
 export const Jak: React.FC = () => {
   const frame = useCurrentFrame();
@@ -48,6 +50,7 @@ export const Jak: React.FC = () => {
             { from: 17.8, to: 24.5, box: BIG },
             { from: 29.2, to: 37.12, box: BIG },
             { from: 37.5, to: 42.07, box: DIFF },
+            { from: 50.62, to: 51.08, box: CAPTION },
             { from: 62.6, to: SECONDS + 1, box: CTA },
           ]}
         />
@@ -93,8 +96,16 @@ export const Jak: React.FC = () => {
           box={DIFF}
           steps={[
             { at: 37.45, label: "а теперь", text: "ВНИМАНИЕ", color: C.yellow },
-            { at: at("n111"), label: "разница в месяц", value: 26000, suffix: " ₽", valueAt: 39.78, color: C.yellow },
-            { at: at("n116"), label: "разница в год", value: 312000, suffix: " ₽", valueAt: at("n118"), color: C.yellow },
+            { at: at("n111"), label: "разница в месяц", value: 26000, suffix: " ₽", valueAt: 39.78, color: C.yellow, count: false },
+            { at: 40.3, label: "разница в год", value: 312000, suffix: " ₽", valueAt: at("n118"), color: C.yellow },
+          ]}
+        />
+        <CaptionFix
+          y={1286}
+          size={92}
+          words={[
+            { text: "приобрести", from: 50.62, to: 50.78 },
+            { text: "квартиру", from: 50.78, to: 51.08 },
           ]}
         />
         <CommentCta from={62.6} to={SECONDS + 1} box={CTA} typeAt={at("n183")} heartAt={63.7} />

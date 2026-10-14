@@ -9,6 +9,9 @@ const ENTER_SEC = 0.55;
 const EXIT_SEC = 0.4;
 const SWAP_SEC = 0.45;
 const COUNT_SEC = 0.9;
+// Счёт обязан дойти до названной суммы и подержаться до смены (правка 14.10.2026)
+const HOLD_SEC = 0.3;
+const MIN_COUNT_SEC = 0.35;
 
 export type Step = {
   at: number; // секунда смены содержимого
@@ -16,6 +19,7 @@ export type Step = {
   value?: number; // число — считается от нуля
   valueAt?: number; // когда число начинает считаться (по слову); по умолчанию at
   text?: string; // вместо числа — текст
+  count?: boolean; // false — число появляется сразу, без счёта
   suffix?: string;
   color?: string;
 };
@@ -50,7 +54,12 @@ export const DataCard: React.FC<{
   const swap = idx === 0 ? 1 : interpolate(since, [0, SWAP_SEC], [0, 1], { ...clamp, easing: smooth });
   const vAt = s.valueAt ?? s.at;
   const vSince = t - vAt;
-  const count = interpolate(vSince, [0, COUNT_SEC], [0, s.value ?? 0], { ...clamp, easing: smooth });
+  const nextAt = steps[idx + 1]?.at ?? (exitAnim ? to - EXIT_SEC : to);
+  const countSec = Math.max(MIN_COUNT_SEC, Math.min(COUNT_SEC, nextAt - vAt - HOLD_SEC));
+  const count =
+    s.count === false
+      ? (s.value ?? 0)
+      : interpolate(vSince, [0, countSec], [0, s.value ?? 0], { ...clamp, easing: smooth });
   const valueIn = interpolate(vSince, [0, 0.3], [0, 1], { ...clamp, easing: smooth });
   const big = (s.value ?? 0) >= 1e6;
 

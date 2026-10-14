@@ -274,3 +274,37 @@ export const useCameraFx = (cuts: number[], punches: number[], shakes: number[])
   }
   return { transform: `translate(${dx}px, ${dy}px) scale(${scale})`, filter: `blur(${blur}px) brightness(${bright})` };
 };
+
+
+// Исправление вшитых субтитров: где два слова наплывом наложились друг на друга,
+// под ними подкладка из исходника, а слова идут по очереди тем же шрифтом
+export const CaptionFix: React.FC<{ words: { text: string; from: number; to: number }[]; y: number; size: number }> = ({
+  words,
+  y,
+  size,
+}) => {
+  const { t } = useT();
+  const w = words.find((x) => t >= x.from && t < x.to);
+  if (!w) return null;
+  const k = interpolate(t, [w.from, w.from + 0.08], [0.6, 1], clamp);
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: y,
+        left: 0,
+        width: 1080,
+        textAlign: "center",
+        fontFamily: LABEL_FONT,
+        fontWeight: 800,
+        fontSize: size,
+        lineHeight: 1,
+        color: C.white,
+        opacity: k,
+        textShadow: "0 4px 18px rgba(0,0,0,0.35)",
+      }}
+    >
+      {w.text}
+    </div>
+  );
+};
