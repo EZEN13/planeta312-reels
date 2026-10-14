@@ -256,3 +256,93 @@ export const WalkRow: React.FC<{ from: number; to: number }> = ({ from, to }) =>
     </div>
   );
 };
+
+// «Всё в пешей доступности» — монетка: школа → (переворот 180°) садик → магазин → парк, с объёмным ребром
+const COIN_FACES: { icon: IconName; label: string }[] = [
+  { icon: "school", label: "школа" },
+  { icon: "kid", label: "садик" },
+  { icon: "shop", label: "магазин" },
+  { icon: "park", label: "парк" },
+];
+const FLIP_SEC = 0.42;
+const COIN = 225; // в 1,5 раза больше значка из ряда (150)
+const EDGE = 14; // толщина ребра, px
+
+export const CoinFlip: React.FC<{ from: number; to: number; flips: number[] }> = ({ from, to, flips }) => {
+  const { t, frame, fps } = useT();
+  if (t < from || t >= to) return null;
+  const enter = spring({ frame: frame - Math.round(from * fps), fps, config: { damping: 200, stiffness: 90 } });
+  const out = interpolate(t, [to - 0.4, to], [1, 0], { ...clamp, easing: Easing.in(Easing.cubic) });
+  // Какой переворот идёт и его доля
+  let face = 0;
+  let angle = 0;
+  let land = 1;
+  flips.forEach((f, i) => {
+    if (t >= f + FLIP_SEC) face = i + 1;
+    else if (t >= f) {
+      const p = interpolate(t - f, [0, FLIP_SEC], [0, 1], { ...clamp, easing: Easing.inOut(Easing.cubic) });
+      // Первая половина — старая сторона уходит, вторая — новая приходит
+      face = p < 0.5 ? i : i + 1;
+      angle = p < 0.5 ? p * 180 : (p - 1) * 180;
+    }
+    // Лёгкий «прыжок» монетки во время переворота и мягкая посадка
+    land *= 1 + 0.12 * Math.sin(Math.PI * interpolate(t - f, [0, FLIP_SEC], [0, 1], clamp));
+  });
+  const cur = COIN_FACES[Math.min(face, COIN_FACES.length - 1)];
+  const draw = face === 0 ? interpolate(t, [from + 0.15, from + 0.75], [0, 1], { ...clamp, easing: smooth }) : 1;
+  const lift = (land - 1) * -260;
+  const caption = interpolate(t, [from + 0.5, from + 0.95], [0, 1], { ...clamp, easing: smooth });
+  const layers = Array.from({ length: 7 }, (_, i) => -(i + 1) * (EDGE / 7));
+  return (
+    <div style={{ position: "absolute", top: 160, left: 0, width: 1080, display: "flex", flexDirection: "column", alignItems: "center", opacity: out }}>
+      <div style={{ perspective: 900, transform: `translateY(${lift + (1 - enter) * -50}px) scale(${(0.6 + 0.4 * enter) * land})` }}>
+        <div style={{ position: "relative", width: COIN, height: COIN, transformStyle: "preserve-3d", transform: `rotateY(${angle}deg)` }}>
+          {/* Ребро монетки — стопка жёлтых дисков за лицевой стороной */}
+          {layers.map((z, i) => (
+            <div key={i} style={{ position: "absolute", inset: 0, borderRadius: 999, background: i === layers.length - 1 ? "#000" : "#C9B000", transform: `translateZ(${z}px)` }} />
+          ))}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              borderRadius: 999,
+              background: C.plate,
+              border: `6px solid ${C.yellow}`,
+              boxShadow: "inset 0 0 0 10px rgba(245,220,5,0.12)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backfaceVisibility: "hidden",
+            }}
+          >
+            <Icon name={cur.icon} size={128} draw={draw} />
+          </div>
+        </div>
+      </div>
+      {/* Тень на «полу» под монеткой: сжимается, когда монетка подпрыгивает */}
+      <div style={{ width: COIN * 0.7, height: 22, marginTop: 18, borderRadius: 999, background: "rgba(0,0,0,0.45)", filter: "blur(10px)", transform: `scaleX(${(1 - (land - 1) * 2) * enter})` }} />
+      <div
+        key={cur.label}
+        style={{
+          marginTop: 6,
+          fontFamily: LABEL_FONT,
+          fontWeight: 800,
+          fontSize: 50,
+          color: C.white,
+          textShadow: "0 5px 0 #000, 0 12px 26px rgba(0,0,0,0.5)",
+          opacity: enter * (Math.abs(angle) > 60 ? 0.3 : 1),
+        }}
+      >
+        {cur.label}
+      </div>
+      <div style={{ marginTop: 18, opacity: caption, transform: `translateY(${(1 - caption) * 16}px)` }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 30px 12px 20px", borderRadius: 999, background: C.yellow, boxShadow: DEPTH }}>
+          <svg width={44} height={44} viewBox="0 0 24 24">
+            <path d="M13 4.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM9 22l3-7 3 3v4M12 15l1-6 3 3h3M13 9l-4 2-1 4" fill="none" stroke={C.plate} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span style={{ fontFamily: LABEL_FONT, fontWeight: 800, fontSize: 38, color: C.plate }}>в пешей доступности</span>
+        </div>
+      </div>
+    </div>
+  );
+};

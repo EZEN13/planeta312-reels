@@ -1,7 +1,7 @@
 import { AbsoluteFill, Easing, interpolate, OffthreadVideo, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { C, LABEL_FONT, NUM_FONT } from "../jak/theme";
 import tip from "./fingertip.json";
-import { LocChip, TimerChip, WalkRow } from "./LocIcons";
+import { CoinFlip, LocChip, TimerChip } from "./LocIcons";
 
 // «ЖАК 10_2»: готовый ролик, добавляем только графику — счётчик «до 70 000 ₽» и плашку комментария с «6,5%», нарисованной пальцем
 export const JAK10_FPS = 30;
@@ -221,7 +221,7 @@ export const Jak10: React.FC = () => (
     <LocChip from={17.92} to={18.68} icon="city" text="город в городе" />
     <LocChip from={18.7} to={19.7} icon="train" text="МЦД Химки" sub="рядом" />
     <TimerChip from={19.72} countAt={19.84} countEnd={20.4} to={22.05} minutes={15} />
-    <WalkRow from={22.1} to={23.4} />
+    <CoinFlip from={22.1} to={25.3} flips={[22.8, 23.5, 24.2]} />
     <CommentPlate />
     <Draw65 />
   </AbsoluteFill>
