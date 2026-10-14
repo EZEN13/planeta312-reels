@@ -25,7 +25,9 @@ export const KineticWord: React.FC<{
   color: string;
   size?: number;
   shadow?: boolean;
-}> = ({ text, role, at, until, y, x = 540, align = "center", color, size, shadow = true }) => {
+  font?: string;
+  weight?: number;
+}> = ({ text, role, at, until, y, x = 540, align = "center", color, size, shadow = true, font, weight }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t0 = at * fps;
@@ -48,8 +50,8 @@ export const KineticWord: React.FC<{
         opacity: enter * exit,
         filter: `blur(${(1 - enter) * 12 + (1 - exit) * 8}px)`,
         whiteSpace: "nowrap",
-        fontFamily: KINETIC_FONT,
-        fontWeight: r.weight,
+        fontFamily: font ?? KINETIC_FONT,
+        fontWeight: weight ?? r.weight,
         fontSize: size ?? r.size,
         letterSpacing: r.tracking,
         wordSpacing: "0.12em",
