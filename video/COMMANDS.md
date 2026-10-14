@@ -55,6 +55,14 @@ python3 tools/overlays.py public/jak-1080.mp4 0.1 — где и когда в и
 npx remotion render Jak out/jak-v1.mp4 --concurrency=2
 3D (Three.js) в рендере работает через ANGLE — включено в remotion.config.ts.
 
+## Трекинг плоскости (рисунок «прилипает» к стене/полу)
+~/.venvs/matting/bin/python tools/track_plane.py "public/ИСХОДНИК.mp4" 28.6 35.2 30.4 "340,440 1080,40 1080,1560 345,1180" src/releases/mut2/plane-wall.json work/check.png
+Время — в исходнике; многоугольник плоскости — на опорном кадре. Для далёких объектов за окном — флаг --affine (не цепляется за раму).
+В Remotion: PlaneLayer из src/releases/mut2/Plane.tsx (гомография → CSS matrix3d). Подписи — не в PlaneLayer, а закреплены на экране.
+
+## Сборка mut2
+npx remotion render Mut2 out/mut2-v1.mp4 --concurrency=2
+
 ## Проба маски
 npx remotion render MaskTest out/mask-test.mp4 --concurrency=2
 

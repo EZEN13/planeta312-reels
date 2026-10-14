@@ -100,15 +100,16 @@ export const VsCard: React.FC<{ from: number; to: number; box: Box; leftAt: numb
 };
 
 // Пузырь комментария «без ПВ» — закрывает вшитую плашку призыва
-export const CommentCta: React.FC<{ from: number; to: number; box: Box; typeAt: number; heartAt: number }> = ({
-  from,
-  to,
-  box,
-  typeAt,
-  heartAt,
-}) => {
+export const CommentCta: React.FC<{
+  from: number;
+  to: number;
+  box: Box;
+  typeAt: number;
+  heartAt: number;
+  text?: string;
+  label?: string;
+}> = ({ from, to, box, typeAt, heartAt, text = "без ПВ", label = "напишите в комментариях" }) => {
   const { t, fps, frame } = useT();
-  const text = "без ПВ";
   const chars = Math.round(interpolate(t, [typeAt, typeAt + 0.45], [0, text.length], clamp));
   const heart = spring({ frame: frame - Math.round(heartAt * fps), fps, config: { damping: 200, stiffness: 90 } });
   const cursor = Math.floor(t * 3) % 2 === 0 && chars < text.length + 1;
@@ -135,7 +136,7 @@ export const CommentCta: React.FC<{ from: number; to: number; box: Box; typeAt: 
         </div>
         <div style={{ flex: 1 }}>
           <div style={{ fontFamily: LABEL_FONT, fontWeight: 800, fontSize: 32, color: C.white, opacity: 0.85 }}>
-            напишите в комментариях
+            {label}
           </div>
           <div style={{ fontFamily: LABEL_FONT, fontWeight: 800, fontSize: 64, color: C.yellow, lineHeight: 1.15 }}>
             «{text.slice(0, chars)}

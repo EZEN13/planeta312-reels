@@ -1,0 +1,121 @@
+{
+  "release": "mut2",
+  "audio": {
+    "sha256": "9a331457d12ae08b675a0452af4b4821772cadc48fb30c61b062e3ac7599bb5b"
+  },
+  "character": {
+    "name": "сухие короткие акценты",
+    "use": [
+      "хлопок на ключевых словах",
+      "счёт на цифрах",
+      "пронос на входе в квартиру",
+      "щелчок на комментарии"
+    ],
+    "avoid": [
+      "звук на каждое слово",
+      "длинные хвосты под речью",
+      "музыка"
+    ]
+  },
+  "events": [
+    {
+      "id": "e01-keys",
+      "screen": "",
+      "at": "n002",
+      "lead": 0.04,
+      "do": "«ключи» за героиней",
+      "role": "reveal",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-18.wav",
+      "durationSec": 0.56
+    },
+    {
+      "id": "e02-area",
+      "screen": "",
+      "at": "n008",
+      "lead": -0.04,
+      "do": "рамка и счёт 56 м²",
+      "role": "reveal",
+      "importance": 2,
+      "file": "05-cifry/cifry-05.wav",
+      "durationSec": 0.9
+    },
+    {
+      "id": "e03-payment",
+      "screen": "",
+      "at": "n014",
+      "lead": -0.04,
+      "do": "плашка 69 000 ₽",
+      "role": "reveal",
+      "importance": 1,
+      "file": "05-cifry/cifry-05.wav",
+      "durationSec": 0.9
+    },
+    {
+      "id": "e04-overview",
+      "screen": "",
+      "at": "n020",
+      "lead": -0.23,
+      "do": "вход в квартиру, «обзор»",
+      "role": "reveal",
+      "importance": 2,
+      "file": "01-svaypy/svaypy-06.wav",
+      "durationSec": 0.64
+    },
+    {
+      "id": "e05-wall",
+      "screen": "",
+      "at": "n052",
+      "lead": 0.08,
+      "do": "пунктир по стене",
+      "role": "reveal",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-14.wav",
+      "durationSec": 0.4
+    },
+    {
+      "id": "e06-cross",
+      "screen": "",
+      "at": "n055",
+      "lead": 0.04,
+      "do": "крест на стене",
+      "role": "reveal",
+      "importance": 1,
+      "file": "02-vsplytie/vsplytie-18.wav",
+      "durationSec": 0.56
+    },
+    {
+      "id": "e07-school",
+      "screen": "",
+      "at": "n120",
+      "lead": 0.18,
+      "do": "круг на школе",
+      "role": "reveal",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-14.wav",
+      "durationSec": 0.4
+    },
+    {
+      "id": "e08-buy",
+      "screen": "",
+      "at": "n136",
+      "lead": 0.04,
+      "do": "«приобрести» за героиней",
+      "role": "reveal",
+      "importance": 2,
+      "file": "02-vsplytie/vsplytie-18.wav",
+      "durationSec": 0.56
+    },
+    {
+      "id": "e09-comment",
+      "screen": "",
+      "at": "n145",
+      "lead": 0.0,
+      "do": "печатается «квартира»",
+      "role": "reveal",
+      "importance": 2,
+      "file": "03-knopki-i-okna/knopki-i-okna-28.wav",
+      "durationSec": 0.5
+    }
+  ]
+}
