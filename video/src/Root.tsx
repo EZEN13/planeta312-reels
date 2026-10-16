@@ -1,5 +1,6 @@
 import { Composition } from "remotion";
 import { MyComposition } from "./Composition";
+import { Hus, HUS_FPS, HUS_SECONDS } from "./releases/hus/Hus";
 import { Jak10, JAK10_FPS, JAK10_SECONDS } from "./releases/jak10/Jak10";
 import { Mut2, MUT2_FPS, MUT2_SECONDS } from "./releases/mut2/Mut2";
 import { Jak, JAK_FPS, JAK_SECONDS } from "./releases/jak/Jak";
@@ -48,6 +49,14 @@ export const RemotionRoot: React.FC = () => {
         component={Jak10}
         durationInFrames={Math.round(JAK10_SECONDS * JAK10_FPS)}
         fps={JAK10_FPS}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Hus"
+        component={Hus}
+        durationInFrames={Math.round(HUS_SECONDS * HUS_FPS)}
+        fps={HUS_FPS}
         width={1080}
         height={1920}
       />
