@@ -1,0 +1,8 @@
+# Python для video/tools/*.py (маска, трекинг, голова, палец, вшитый текст).
+# Версии как на рабочем Mac автора (октябрь 2026).
+torch==2.14.1
+torchvision==0.29.1
+numpy==2.2.6
+opencv-contrib-python==5.0.0.93
+mediapipe==1.1.0
+pillow==12.3.0
